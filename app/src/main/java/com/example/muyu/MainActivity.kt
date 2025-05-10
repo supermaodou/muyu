@@ -18,10 +18,13 @@ class MainActivity : AppCompatActivity() {
     private var soundId = 0
     private lateinit var knockCountText: TextView
     private lateinit var meritText: TextView
+    private lateinit var eggText: TextView
+    private lateinit var particleView: ParticleView
     private lateinit var muyuImage: ImageView
     private var knockCount = 0
     private var lastKnockTime = 0L
     private val minKnockInterval = 100L // 最小点击间隔，单位：毫秒
+    private val eggTriggers = setOf(100, 500, 1000) // 彩蛋触发阈值
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +53,8 @@ class MainActivity : AppCompatActivity() {
         muyuImage = findViewById(R.id.muyuImage)
         knockCountText = findViewById(R.id.knockCount)
         meritText = findViewById(R.id.meritText)
+        eggText = findViewById(R.id.eggText)
+        particleView = findViewById(R.id.particleView)
 
         // 读取保存的敲击次数
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
@@ -104,6 +109,11 @@ class MainActivity : AppCompatActivity() {
         knockCount++
         updateKnockCount()
 
+        // 检查彩蛋触发
+        if (knockCount in eggTriggers) {
+            triggerEgg()
+        }
+
         // 保存敲击次数
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         prefs.edit().putInt("knock_count", knockCount).apply()
@@ -111,6 +121,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateKnockCount() {
         knockCountText.text = "功德: $knockCount"
+    }
+
+    private fun triggerEgg() {
+        // 显示“功德圆满！”动画
+        eggText.visibility = View.VISIBLE
+        eggText.alpha = 1.0f
+        eggText.translationY = 0f
+        eggText.animate()
+            .translationY(-150f)
+            .alpha(0f)
+            .setDuration(1000)
+            .withEndAction {
+                eggText.visibility = View.INVISIBLE
+            }
+            .start()
+
+        // 启动粒子动画
+        particleView.startAnimation()
     }
 
     override fun onDestroy() {

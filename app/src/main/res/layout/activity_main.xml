@@ -39,4 +39,26 @@
         app:layout_constraintEnd_toEndOf="@id/muyuImage"
         app:layout_constraintStart_toStartOf="@id/muyuImage" />
 
+    <TextView
+        android:id="@+id/eggText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="功德圆满！"
+        android:textColor="#FFD700"
+        android:textSize="22sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@id/muyuImage"
+        app:layout_constraintStart_toStartOf="@id/muyuImage"
+        app:layout_constraintTop_toBottomOf="@id/muyuImage" />
+
+    <com.example.muyu.ParticleView
+        android:id="@+id/particleView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
