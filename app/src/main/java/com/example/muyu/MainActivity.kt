@@ -1,6 +1,9 @@
 package com.example.muyu
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.Build
@@ -12,6 +15,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 class MainActivity : AppCompatActivity() {
     private lateinit var soundPool: SoundPool
@@ -26,6 +30,19 @@ class MainActivity : AppCompatActivity() {
     private val minKnockInterval = 100L // 最小点击间隔，单位：毫秒
     private val eggTriggers = setOf(100, 500, 1000) // 彩蛋触发阈值
 
+    private val updateReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == "com.example.muyu.UPDATE_MAIN") {
+                knockCount = PreferenceManager.getKnockCount(context)
+                updateKnockCount()
+                // 检查彩蛋触发
+                if (knockCount in eggTriggers) {
+                    triggerEgg()
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,6 +54,10 @@ class MainActivity : AppCompatActivity() {
                 controller.isAppearanceLightStatusBars = true // 设置状态栏图标为浅色（白色）
             }
         }
+
+        // 注册本地广播接收器
+        val filter = IntentFilter("com.example.muyu.UPDATE_MAIN")
+        LocalBroadcastManager.getInstance(this).registerReceiver(updateReceiver, filter)
 
         // 初始化 SoundPool
         val audioAttributes = AudioAttributes.Builder()
@@ -115,8 +136,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 通知小部件更新
-        val intent = Intent(this, MuyuWidgetProvider::class.java).apply {
-            action = "com.example.muyu.UPDATE_WIDGET"
+        val intent = Intent("com.example.muyu.UPDATE_WIDGET").apply {
+            setPackage(packageName) // 确保广播针对当前应用
         }
         sendBroadcast(intent)
     }
@@ -146,5 +167,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         soundPool.release()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(updateReceiver)
     }
 }

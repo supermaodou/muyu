@@ -10,6 +10,7 @@ import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.SystemClock
 import android.widget.RemoteViews
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 class MuyuWidgetProvider : AppWidgetProvider() {
 
@@ -45,6 +46,10 @@ class MuyuWidgetProvider : AppWidgetProvider() {
 
                 // 更新所有小部件
                 updateAllWidgets(context)
+
+                // 通知主页面更新
+                val updateIntent = Intent("com.example.muyu.UPDATE_MAIN")
+                LocalBroadcastManager.getInstance(context).sendBroadcast(updateIntent)
             }
             "com.example.muyu.UPDATE_WIDGET" -> {
                 // 主页面更新时刷新小部件
