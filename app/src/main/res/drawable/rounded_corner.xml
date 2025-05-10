@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="16dp" /> <!-- 圆角半径，调整为所需值 -->
+    <solid android:color="@android:color/transparent" /> <!-- 透明背景 -->
+</shape>
