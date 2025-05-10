@@ -2,6 +2,13 @@
 
 一个简单而有趣的Android电子木鱼应用，让您随时随地都能敲击木鱼积累功德。
 
+## 应用截图
+
+<div align="center">
+    <img src="screenshots/home.jpg" alt="主界面" width="200"/>
+    <img src="screenshots/widget.jpg" alt="桌面小部件" width="200"/>
+</div>
+
 ## 功能特点
 
 - 真实的木鱼敲击音效
