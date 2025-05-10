@@ -3,13 +3,13 @@ package com.example.muyu
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.SystemClock
 import android.widget.RemoteViews
-import androidx.preference.PreferenceManager
 
 class MuyuWidgetProvider : AppWidgetProvider() {
 
@@ -26,30 +26,29 @@ class MuyuWidgetProvider : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-        if (intent.action == "com.example.muyu.KNOCK_MUYU") {
-            // 防抖
-            val currentTime = SystemClock.elapsedRealtime()
-            if (currentTime - lastKnockTime < minKnockInterval) {
-                return
+        when (intent.action) {
+            "com.example.muyu.KNOCK_MUYU" -> {
+                // 防抖
+                val currentTime = SystemClock.elapsedRealtime()
+                if (currentTime - lastKnockTime < minKnockInterval) {
+                    return
+                }
+                lastKnockTime = currentTime
+
+                // 播放音效
+                initializeSoundPool(context)
+                soundPool?.play(soundId, 1.0f, 1.0f, 1, 0, 1.0f)
+
+                // 更新敲击次数
+                val knockCount = PreferenceManager.getKnockCount(context) + 1
+                PreferenceManager.setKnockCount(context, knockCount)
+
+                // 更新所有小部件
+                updateAllWidgets(context)
             }
-            lastKnockTime = currentTime
-
-            // 播放音效
-            initializeSoundPool(context)
-            soundPool?.play(soundId, 1.0f, 1.0f, 1, 0, 1.0f)
-
-            // 更新敲击次数
-            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            val knockCount = prefs.getInt("knock_count", 0) + 1
-            prefs.edit().putInt("knock_count", knockCount).apply()
-
-            // 更新所有小部件
-            val appWidgetManager = AppWidgetManager.getInstance(context)
-            val appWidgetIds = appWidgetManager.getAppWidgetIds(
-                android.content.ComponentName(context, MuyuWidgetProvider::class.java)
-            )
-            for (appWidgetId in appWidgetIds) {
-                updateAppWidget(context, appWidgetManager, appWidgetId)
+            "com.example.muyu.UPDATE_WIDGET" -> {
+                // 主页面更新时刷新小部件
+                updateAllWidgets(context)
             }
         }
     }
@@ -92,8 +91,7 @@ class MuyuWidgetProvider : AppWidgetProvider() {
             val views = RemoteViews(context.packageName, R.layout.widget_layout)
 
             // 读取敲击次数
-            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            val knockCount = prefs.getInt("knock_count", 0)
+            val knockCount = PreferenceManager.getKnockCount(context)
             views.setTextViewText(R.id.widgetKnockCount, "功德: $knockCount")
 
             // 设置点击事件
@@ -109,6 +107,16 @@ class MuyuWidgetProvider : AppWidgetProvider() {
             views.setOnClickPendingIntent(R.id.widgetMuyuImage, pendingIntent)
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
+        }
+
+        private fun updateAllWidgets(context: Context) {
+            val appWidgetManager = AppWidgetManager.getInstance(context)
+            val appWidgetIds = appWidgetManager.getAppWidgetIds(
+                ComponentName(context, MuyuWidgetProvider::class.java)
+            )
+            for (appWidgetId in appWidgetIds) {
+                updateAppWidget(context, appWidgetManager, appWidgetId)
+            }
         }
     }
 }
