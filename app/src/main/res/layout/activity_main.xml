@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <ImageView
+        android:id="@+id/muyuImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/muyu"
+        app:layout_constraintBottom_toTopOf="@id/knockCount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/knockCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="功德: 0"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/muyuImage" />
+
+    <TextView
+        android:id="@+id/meritText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="功德+1"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/muyuImage"
+        app:layout_constraintEnd_toEndOf="@id/muyuImage"
+        app:layout_constraintStart_toStartOf="@id/muyuImage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

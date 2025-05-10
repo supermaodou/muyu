@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- 设置标题栏和状态栏背景色 -->
+        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="colorAccent">#03DAC5</item>
+        <!-- 页面背景色 -->
+        <item name="android:windowBackground">#000000</item>
+        <!-- 确保状态栏和导航栏不透明 -->
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <!-- 设置标题栏文本和图标颜色为白色 -->
+        <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+        <!-- 状态栏图标和文本为浅色（白色），适配黑色背景 -->
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <!-- 自定义标题栏样式 -->
+    <style name="ActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">#000000</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitleText</item>
+    </style>
+
+    <!-- 标题栏文本样式 -->
+    <style name="ActionBarTitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+</resources>
