@@ -5,8 +5,8 @@
 ## 应用截图
 
 <div align="center">
-    <img src="screenshots/home.jpg" alt="主界面" width="200"/>
-    <img src="screenshots/widget.jpg" alt="桌面小部件" width="200"/>
+    <img src="screenshots/home.jpg" alt="主界面" width="150"/>
+    <img src="screenshots/widget.jpg" alt="桌面小部件" width="150"/>
 </div>
 
 ## 功能特点
